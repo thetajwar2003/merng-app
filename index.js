@@ -7,7 +7,6 @@ const { MONGODB } = require('./config.js');
 const typeDefs = gql`
     type Query{
         sayHi: String!
-
     }
 `;
 
@@ -24,7 +23,8 @@ const server = new ApolloServer({
 });
 
 //connect to db 
-mongoose.connect(MONGODB, { useNewUrlParser: true })
+mongoose.Promise = global.Promise
+mongoose.connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
     console.log("Connected to mongodb");
     // initialize the server
@@ -33,3 +33,4 @@ mongoose.connect(MONGODB, { useNewUrlParser: true })
 .then(res => {
     console.log(`Server running at ${res.url}`)
 })
+.catch(err => console.log(err))
